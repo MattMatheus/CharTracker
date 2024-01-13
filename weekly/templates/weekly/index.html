@@ -1,0 +1,20 @@
+<table>
+    <thead>
+        <tr>
+            <th>Character Name</th>
+            <th>Superbloom</th>
+            <th>Rep Weekly</th>
+            <th>Dream Seeds</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for progress in weekly_char_progresses %}
+        <tr>
+            <td>{{ progress.char_name }}</td>
+            <td>{{ progress.superbloom }}</td>
+            <td>{{ progress.rep_weekly }}</td>
+            <td>{{ progress.dream_seeds }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
