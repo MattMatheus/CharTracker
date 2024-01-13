@@ -18,5 +18,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 import weekly.urls
+import oauth.urls
 
-urlpatterns = [path("admin/", admin.site.urls), path("weekly", include(weekly.urls))]
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("weekly", include(weekly.urls)),
+    path("oauth/", include(oauth.urls)),
+]

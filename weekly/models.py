@@ -7,6 +7,15 @@ class WeeklyCharProgress(models.Model):
     superbloom = models.BooleanField()
     rep_weekly = models.BooleanField()
     dream_seeds = models.BooleanField()
+    raidfinder_1 = models.BooleanField()
+    raidfinder_2 = models.BooleanField()
+    raidfinder_3 = models.BooleanField()
+    raidfinder_4 = models.BooleanField()
 
     def __str__(self):
         return self.char_name
+
+
+class UserAuthDetails:
+    def __init__(self) -> None:
+        pass
