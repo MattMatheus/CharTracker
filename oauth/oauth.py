@@ -64,7 +64,7 @@ def callback(request):
         sub = response_data.get("sub")
 
         token_data = UserAuthDetails(
-            token=access_token, refresh_token=expires_in, scope=scope
+            token=access_token, refresh_token=expires_in, scope=scope, sub=sub
         )
         token_data.save()
 
@@ -72,3 +72,8 @@ def callback(request):
 
     except requests.RequestException as e:
         return HttpResponse("Missing authorization code", status=500)
+
+
+def purge_auth(request):
+    UserAuthDetails.objects.all().delete()
+    return HttpResponse("Success", status=200)
