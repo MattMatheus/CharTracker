@@ -1,18 +1,22 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     <title>Wow Character Tracker</title>
 </head>
 <body>
     <header>
-        <h1>Wow Character Tracker</h1>
-        {% if request.user.is_authenticated %}
-            <p>Hello, {{ request.user.username }}. <a href="{% url 'logout' %}">Logout</a></p>
-        {% else %}
-            <p>You are not logged in. <a href="{% url 'login' %}">Login</a></p>
-        {% endif %}
+        <div class="header-content">
+            <h1>Wow Character Tracker</h1>
+            {% if request.user.is_authenticated %}
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+            {% endif %}
+        </div>
     </header>
-
     <main>
         {% block content %}{% endblock %}
     </main>

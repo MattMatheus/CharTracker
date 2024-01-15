@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h3>Check weekly quests</h3>
+<form method="GET" action="{% url 'check_weekly_quests' %}">
+    <input type="text" name="character" placeholder="Character name">
+    <input type="text" name="realm" placeholder="Realm name">
+    <input type="submit" value="Check weekly quests">
+</form>
+{% endblock %}
+```

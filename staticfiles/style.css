@@ -1,4 +1,4 @@
-/* weekly/style.css */
+/* style.css */
 
 body {
     font-family: Arial, sans-serif;
@@ -35,4 +35,11 @@ th, td {
 
 th {
     background-color: #f2f2f2;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1em; 
 }

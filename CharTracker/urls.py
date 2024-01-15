@@ -20,6 +20,7 @@ from django.urls import path, include
 
 import weekly.urls
 import oauth.urls
+import CharTracker.views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,4 +28,5 @@ urlpatterns = [
     path("oauth/", include(oauth.urls)),
     path("accounts/", include("django.contrib.auth.urls")),
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
+    path('', CharTracker.views.index, name='index'),
 ]
