@@ -77,21 +77,19 @@ def check_weekly_quests(request):
 
 def get_quests(request):
     charname = request.GET.get("character", None)
-    uri = f"https://us.api.blizzard.com/profile/wow/character/lightbringer/{charname}/achievements/statistics"
-    authinfo = UserAuthDetails.objects.get(sub=mattsub)
-
-    request_data = {
-        "access_token": authinfo.token,
-        "region": "us",
-        "namespace": "profile-us",
-        "locale": "en_US",
-    }
+    id = int(request.GET.get("id", None))
+    realm = request.GET.get("realm", "lightbringer")
+    uri = f"https://us.api.blizzard.com/profile/wow/character/{realm}/{charname}/quests/completed"
+    request_data = get_auth_token(request)
 
     url = f"{uri}?{urllib.parse.urlencode(request_data)}"
     try:
         response = requests.get(url)
         response.raise_for_status()
         chardata = response.json()
+        for quest in chardata["quests"]:
+            if quest["id"] == id:
+                return JsonResponse(quest)
         return JsonResponse(chardata)
     except requests.RequestException as e:
         return HttpResponse(f"Uh-oh, we hit error {e.response.status_code}", str(e))
