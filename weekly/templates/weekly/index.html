@@ -1,20 +1,36 @@
-<table>
-    <thead>
-        <tr>
-            <th>Character Name</th>
-            <th>Superbloom</th>
-            <th>Rep Weekly</th>
-            <th>Dream Seeds</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in progress %}
-        <tr>
-            <td>{{ item.char_name }}</td>
-            <td>{% if item.superbloom %}Yes{% else %}No{% endif %}</td>
-            <td>{% if item.rep_weekly %}Yes{% else %}No{% endif %}</td>
-            <td>{% if item.dream_seeds %}Yes{% else %}No{% endif %}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<html>
+    <head>
+    </head>
+    <body>
+        <form method="GET" action="{% url 'check_weekly_quests' %}">
+            <input type="text" name="character" placeholder="Character name">
+            <input type="text" name="realm" placeholder="Realm name">
+            <input type="submit" value="Check weekly quests">
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Character Name</th>
+                    <th>Superbloom</th>
+                    <th>Rep Weekly</th>
+                    <th>Dream Seeds</th>
+                    <th>Crated</th>
+                    <th>Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in progress %}
+                <tr>
+                    <td>{{ item.char_name }}</td>
+                    <td>{% if item.superbloom %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if item.rep_weekly %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if item.dream_seeds %}Yes{% else %}No{% endif %}</td>
+                    <td>{{ item.create_date }}</td>
+                    <td>{{ item.last_updated }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
+

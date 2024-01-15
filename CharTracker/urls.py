@@ -22,6 +22,6 @@ import oauth.urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("weekly", include(weekly.urls)),
+    path("weekly/", include(weekly.urls)),
     path("oauth/", include(oauth.urls)),
 ]

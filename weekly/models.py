@@ -11,11 +11,8 @@ class WeeklyCharProgress(models.Model):
     raidfinder_2 = models.BooleanField()
     raidfinder_3 = models.BooleanField()
     raidfinder_4 = models.BooleanField()
+    create_date = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.char_name
-
-
-class UserAuthDetails:
-    def __init__(self) -> None:
-        pass
