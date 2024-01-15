@@ -9,10 +9,10 @@ import urllib.parse
 mattsub = "52039343"
 api_base_url = "https://us.api.blizzard.com"
 profile_url_endpoints = {
-    "profile_summary": "/profile/user/wow", #returuns a list of characters
-    "mount_summary": "/profile/user/wow/collections/mounts", #returns a list of mounts
-    "pet_summary": "/profile/user/wow/collections/pets", #returns a list of pets
-    "completed_quests": "/profile/user/wow/quests/completed", #returns a list of completed quests    
+    "profile_summary": "/profile/user/wow",  # returuns a list of characters
+    "mount_summary": "/profile/user/wow/collections/mounts",  # returns a list of mounts
+    "pet_summary": "/profile/user/wow/collections/pets",  # returns a list of pets
+    "completed_quests": "/profile/user/wow/quests/completed",  # returns a list of completed quests
 }
 
 
@@ -22,7 +22,7 @@ def index(request):
     authinfo = UserAuthDetails.objects.get(sub=mattsub)
     return HttpResponse(authinfo.sub)
     # return render(request, "weekly/index.html", context)
-    
+
 
 def get_auth_token(request):
     authinfo = UserAuthDetails.objects.get(sub=mattsub)
@@ -39,11 +39,41 @@ def check_weekly_quests(request):
     charname = request.GET.get("character", None)
     realm = request.GET.get("realm", "lightbringer")
     request_data = get_auth_token(request)
-    quest_list = [78319, 78821, 78444]
-    progress = WeeklyCharProgress
+    query_result = WeeklyCharProgress(
+        char_name=charname,
+        superbloom=False,
+        rep_weekly=False,
+        dream_seeds=False,
+        raidfinder_1=False,
+        raidfinder_2=False,
+        raidfinder_3=False,
+        raidfinder_4=False,
+    )
     uri = f"https://us.api.blizzard.com/profile/wow/character/{realm}/{charname}/quests/completed"
-    
-    
+    url = f"{uri}?{urllib.parse.urlencode(request_data)}"
+
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        questdata = response.json()
+        for quest in questdata["quests"]:
+            if quest["id"] == 78319:
+                query_result.dream_seeds = True
+            if quest["id"] == 78821:
+                query_result.rep_weekly = True
+            if quest["id"] == 78444:
+                query_result.superbloom = True
+        query_result.save()
+        progress = WeeklyCharProgress.objects.filter(char_name=charname)
+        for progress_item in progress:
+            print(progress_item.superbloom, progress_item.rep_weekly, progress_item.dream_seeds)
+        #return HttpResponse(progress_object)
+        return render(request, "weekly/index.html", {"progress": progress})
+
+
+    except requests.RequestException as e:
+        return HttpResponse(f"Uh-oh, we hit error {e.response.status_code}", str(e))
+
 
 def get_quests(request):
     charname = request.GET.get("character", None)

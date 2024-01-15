@@ -8,12 +8,12 @@
         </tr>
     </thead>
     <tbody>
-        {% for progress in weekly_char_progresses %}
+        {% for item in progress %}
         <tr>
-            <td>{{ progress.char_name }}</td>
-            <td>{{ progress.superbloom }}</td>
-            <td>{{ progress.rep_weekly }}</td>
-            <td>{{ progress.dream_seeds }}</td>
+            <td>{{ item.char_name }}</td>
+            <td>{% if item.superbloom %}Yes{% else %}No{% endif %}</td>
+            <td>{% if item.rep_weekly %}Yes{% else %}No{% endif %}</td>
+            <td>{% if item.dream_seeds %}Yes{% else %}No{% endif %}</td>
         </tr>
         {% endfor %}
     </tbody>
