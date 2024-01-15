@@ -7,7 +7,7 @@ from .models import UserAuthDetails
 from django.http import HttpResponse, HttpResponseRedirect
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
 
@@ -44,9 +44,6 @@ async def process_login(request):
 
 def callback(request):
     code = request.GET.get("code", None)
-    print(client_secret)
-    print(client_id)
-    print(code)
     if not code:
         return HttpResponse("Missing authorization code", status=400)
 
