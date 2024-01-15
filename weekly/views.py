@@ -19,7 +19,8 @@ def index(request):
 
 def get_quests(request):
     charname = request.GET.get("character", None)
-    uri = f"https://us.api.blizzard.com/profile/wow/character/lightbringer/{charname}/quests"
+    uri = f"https://us.api.blizzard.com/profile/user/wow/protected-character/lightbringer-{charname}"
+
     authinfo = UserAuthDetails.objects.get(sub=mattsub)
 
     request_data = {

@@ -13,9 +13,12 @@ client_secret = os.getenv("CLIENT_SECRET")
 
 authorization_base_url = "https://oauth.battle.net/authorize"
 redirect_uri = "http://localhost:8000/oauth/callback"
-token_uri = "https://us.battle.net/oauth/token"
+token_base_uri = "https://us.battle.net/oauth/token"
 
 if client_id is None:
+    raise ValueError("CLIENT_ID environment variable is not set")
+
+if client_secret is None:
     raise ValueError("CLIENT_ID environment variable is not set")
 
 
@@ -41,6 +44,9 @@ async def process_login(request):
 
 def callback(request):
     code = request.GET.get("code", None)
+    print(client_secret)
+    print(client_id)
+    print(code)
     if not code:
         return HttpResponse("Missing authorization code", status=400)
 
@@ -52,13 +58,15 @@ def callback(request):
         "client_secret": client_secret,
     }
 
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    url = f"{token_base_uri}?{urllib.parse.urlencode(token_data)}"
+
     try:
-        response = requests.post(token_uri, data=token_data)
+        response = requests.post(url, data=token_data, headers=headers)
         response.raise_for_status()
         response_data = response.json()
 
         access_token = response_data.get("access_token")
-        token_type = response_data.get("token_type")
         expires_in = response_data.get("expires_in")
         scope = response_data.get("scope")
         sub = response_data.get("sub")
@@ -71,7 +79,7 @@ def callback(request):
         return HttpResponse(str(access_token), status=200)
 
     except requests.RequestException as e:
-        return HttpResponse("Missing authorization code", status=500)
+        return HttpResponse(str(e), status=500)
 
 
 def purge_auth(request):
