@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.decorators import login_required
 from .models import WeeklyCharProgress
 from oauth.models import UserAuthDetails
 
@@ -34,7 +35,7 @@ def get_auth_token(request):
     }
     return request_data
 
-
+@login_required
 def check_weekly_quests(request):
     charname = request.GET.get("character", None)
     realm = request.GET.get("realm", "lightbringer")

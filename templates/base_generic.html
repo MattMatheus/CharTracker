@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wow Character Tracker</title>
+</head>
+<body>
+    <header>
+        <h1>Wow Character Tracker</h1>
+        {% if request.user.is_authenticated %}
+            <p>Hello, {{ request.user.username }}. <a href="{% url 'logout' %}">Logout</a></p>
+        {% else %}
+            <p>You are not logged in. <a href="{% url 'login' %}">Login</a></p>
+        {% endif %}
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>Copyright &copy; 2024 Baseprotocol.com</p>
+    </footer>
+</body>
+</html>
