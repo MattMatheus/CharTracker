@@ -40,3 +40,9 @@ th {
     justify-content: space-between;
     align-items: center;
 }
+
+.bob {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
