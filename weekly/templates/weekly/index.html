@@ -1,6 +1,10 @@
+{% load static %}
+
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     </head>
+
     <body>
         <form method="GET" action="{% url 'check_weekly_quests' %}">
             <input type="text" name="character" placeholder="Character name">
