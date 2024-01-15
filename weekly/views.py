@@ -64,9 +64,7 @@ def check_weekly_quests(request):
             if quest["id"] == 78444:
                 query_result.superbloom = True
         query_result.save()
-        progress = WeeklyCharProgress.objects.filter(char_name=charname)
-        for progress_item in progress:
-            print(progress_item.superbloom, progress_item.rep_weekly, progress_item.dream_seeds)
+        progress = [WeeklyCharProgress.objects.filter(char_name=charname).latest("id")]
         #return HttpResponse(progress_object)
         return render(request, "weekly/index.html", {"progress": progress})
 
