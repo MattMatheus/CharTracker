@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+    <form>
+        <label for="realm">Realm:</label>
+        <input type="text" id="realm" name="realm">
+
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id">
+
+        <label for="character">Character:</label>
+        <input type="text" id="character" name="character">
+
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

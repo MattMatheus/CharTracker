@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
-from .models import WeeklyCharProgress
+from .models import WeeklyCharProgress, QuestCompletionStatus
 from oauth.models import UserAuthDetails
 
 import requests
@@ -35,9 +35,12 @@ def get_auth_token(request):
     }
     return request_data
 
+
 @login_required
 def check_weekly_quests(request):
     charname = request.GET.get("character", None)
+    if not charname:
+        return render(request, "weekly/weeklies.html", {"progress": None})
     realm = request.GET.get("realm", "lightbringer")
     request_data = get_auth_token(request)
     query_result = WeeklyCharProgress(
@@ -66,29 +69,40 @@ def check_weekly_quests(request):
                 query_result.superbloom = True
         query_result.save()
         progress = [WeeklyCharProgress.objects.filter(char_name=charname).latest("id")]
-        #return HttpResponse(progress_object)
-        return render(request, "weekly/index.html", {"progress": progress})
-
+        # return HttpResponse(progress_object)
+        return render(request, "weekly/weeklies.html", {"progress": progress})
 
     except requests.RequestException as e:
         return HttpResponse(f"Uh-oh, we hit error {e.response.status_code}", str(e))
 
 
+@login_required
 def get_quests(request):
+    init = request.GET.get("init")
+    if init:
+        return render(request, "weekly/questsearch.html", {"quest": None})
     charname = request.GET.get("character", None)
     id = int(request.GET.get("id", None))
     realm = request.GET.get("realm", "lightbringer")
     uri = f"https://us.api.blizzard.com/profile/wow/character/{realm}/{charname}/quests/completed"
     request_data = get_auth_token(request)
-
     url = f"{uri}?{urllib.parse.urlencode(request_data)}"
     try:
         response = requests.get(url)
         response.raise_for_status()
         chardata = response.json()
+        quest_matches = []
         for quest in chardata["quests"]:
+            quest_match = QuestCompletionStatus(
+                quest_id=quest["id"],
+                name=quest["name"],
+                data_link=quest["key"]["href"],
+            )
+            quest_matches.append(quest_match)
             if quest["id"] == id:
-                return JsonResponse(quest)
-        return JsonResponse(chardata)
+                return render(request, "weekly/quest.html", {"quest": quest_matches})
+        full_list = QuestCompletionStatus.objects.all()
+        return render(request, "weekly/quest.html", {"quest": full_list})
+
     except requests.RequestException as e:
         return HttpResponse(f"Uh-oh, we hit error {e.response.status_code}", str(e))

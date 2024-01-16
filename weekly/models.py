@@ -16,3 +16,14 @@ class WeeklyCharProgress(models.Model):
 
     def __str__(self):
         return self.char_name
+
+
+class QuestCompletionStatus(models.Model):
+    quest_id = models.IntegerField()
+    name = models.CharField(max_length=64)
+    data_link = models.CharField(max_length=256)
+    create_date = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.quest_name

@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    </head>
+    <body>
+
+    </body>
+        <div class="quest-completion-status">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Quest ID</th>
+                        <th>Name</th>
+                        <th>Data Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in quest %}
+                    <tr>
+                        <td>{{ item.quest_id }}</td>
+                        <td>{{ item.name}}</td>
+                        <td>{{ item.data_link}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+</html>
+{% endblock %}

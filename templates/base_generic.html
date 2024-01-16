@@ -9,20 +9,33 @@
     <header>
         <div class="header-content">
             <h1>Wow Character Tracker</h1>
-            {% if request.user.is_authenticated %}
-            <form method="post" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <button type="submit">Logout</button>
-            </form>
-            {% endif %}
+            <div class="nav">
+                <form method="get" action="{% url 'check_weekly_quests' %}">
+                    <button type="submit">Weekly</button>
+                </form>
+                <form method="get" action="{% url 'get_quests' %}">
+                    <input type="hidden" name="init" value="true">
+                    <button type="submit">Quest</button>
+                </form>
+                {% if request.user.is_authenticated %}
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+                {% endif %}
+            </div>
         </div>
     </header>
     <main>
-        {% block content %}{% endblock %}
+        <div class="main-content">
+            {% block content %}{% endblock %}
+        </div>
     </main>
 
     <footer>
-        <p>Copyright &copy; 2024 Baseprotocol.com</p>
+        <div class="footer-content">
+            <p>Copyright &copy; 2024 Baseprotocol.com</p>
+        </div>
     </footer>
 </body>
 </html>

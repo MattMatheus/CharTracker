@@ -73,7 +73,7 @@ def callback(request):
         )
         token_data.save()
 
-        return HttpResponse(str(access_token), status=200)
+        return HttpResponseRedirect(redirect_to="/")
 
     except requests.RequestException as e:
         return HttpResponse(str(e), status=500)
